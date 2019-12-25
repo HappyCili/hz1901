@@ -1,20 +1,37 @@
 import random
 
 from django.http import JsonResponse
-from swiper.swiper import config
-from .logics import send_vcode
-from swiper.common import stat
+from django.core.cache import cache
+
+from swiper.user.models import User
+from swiper.user import logics
+from swiper.common import stat, keys
 
 
 def get_vcode(request):
     ''' 用户获取验证码'''
     phonenum = request.GET.get("phonenum")
-    if send_vcode(phonenum):
+    if logics.send_vcode(phonenum):
         return JsonResponse({'code': stat.OK, "data": None})
     else:
-        return JsonResponse({'code': stat.VcodeErr, "data": "VcodeError"})
+        return JsonResponse({'code': stat.SMSErr, "data": "SMSError"})
 
 def check_vcode(request):
+    '''检查验证码， 并进行登录注册'''
     phonenum = request.POST.get("phonenum")
     vcode = request.POST.get("vcode")
-    return JsonResponse({})
+    cache_vcode = cache.get(keys.VCODE_KEY % phonenum)
+    # 检测验证码是否过期
+    if cache_vcode is None:
+        return JsonResponse({'code': stat.VcodeExpired, "data": "VcodeExpired"})
+    # 判断验证码是否一致
+    if cache_vcode == vcode:
+        try:
+            user = User.objects.get(phonenum=phonenum)
+        except User.DoesNOtExist:
+            user = User.objects.create(phonenum=phonenum, nickname=phonenum)
+        # 使用session记录登录状态
+        request.session['uid'] = user.id
+        return JsonResponse({'code': 0, 'data': user.to_dict()})
+    else:
+        return JsonResponse({'code': stat.VcodeErr, "data": "VcodeError"})
