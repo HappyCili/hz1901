@@ -35,3 +35,21 @@ def check_vcode(request):
         return render_json(code=0, data=user.to_dict())
     else:
         return render_json(code=stat.VcodeErr, data="VcodeError")
+
+
+def get_profile(request):
+    '''获取个人资料'''
+    user = request.uesr
+
+    return render_json()
+
+
+def set_profile(request):
+    '''修改个人信息,及交友资料'''
+    return render_json()
+
+
+def upload_avatar(request):
+    '''上传头像'''
+    return render_json()
+

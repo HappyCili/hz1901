@@ -16,8 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from user import apis as user_api
+from swiper.user import apis as user_api
 urlpatterns = [
     url(r'^api/uesr/get_vcode', user_api.get_vcode),
     url(r'^api/uesr/check_vcode', user_api.check_vcode),
+    url(r'^api/uesr/get_profile', user_api.get_profile),
+    url(r'^api/uesr/set_profile', user_api.set_profile),
+    url(r'^api/uesr/upload_avatar', user_api.upload_avatar),
 ]
