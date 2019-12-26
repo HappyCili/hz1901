@@ -44,6 +44,8 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 自定义中间件
     'common.middleware.AuthMiddleware',
 ]
 

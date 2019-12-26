@@ -1,8 +1,7 @@
-import random
 import os
 
-from django.http import JsonResponse
 from django.core.cache import cache
+from django.utils import datastructures
 
 from user.models import User
 from user import logics
@@ -17,9 +16,10 @@ def get_vcode(request):
     ''' 用户获取验证码'''
     phonenum = request.GET.get("phonenum")
     if logics.send_vcode(phonenum):
-        return render_json(code=stat.OK, data=None)
+        return render_json(code=stat.OK)
     else:
         return render_json(code=stat.SMSErr, data="SMSError")
+
 
 def check_vcode(request):
     '''检查验证码， 并进行登录注册'''
@@ -53,7 +53,7 @@ def set_profile(request):
     user = request.user
     user_form = UserForm(request.POST)
     if user_form.is_valid():
-        user.__dict__.update(user_form.cleaned_data)    #  更新兑现属性
+        user.__dict__.update(user_form.cleaned_data)    # 更新兑现属性
         user.save()
     else:
         return render_json(data=user_form.errors, code=stat.UserDataErr)
@@ -69,11 +69,14 @@ def set_profile(request):
 
 def upload_avatar(request):
     '''上传头像'''
-    avatar_file = request.FILES['avatar']
+    try:
+        avatar_file = request.FILES['avatar']
+    except datastructures.MultiValueDictKeyError:
+        return render_json(code=stat.ImgaeDataErr, data="ImageDateErr")
     fullpath, filename = logics.save_avatar(avatar_file, request.user.id)
     file_url = upload_to_qn(fullpath, filename)
     os.remove(fullpath)
-    request.user.avatar=file_url
+    request.user.avatar = file_url
     request.user.save()
     return render_json()
 
