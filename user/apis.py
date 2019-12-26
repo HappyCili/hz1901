@@ -5,9 +5,11 @@ from django.core.cache import cache
 
 from user.models import User
 from user import logics
+from user.forms import UserForm, ProfileForm
 from common import stat, keys
 from lib.http import render_json
 from lib.orm import model_to_dict
+
 
 def get_vcode(request):
     ''' 用户获取验证码'''
@@ -46,6 +48,20 @@ def get_profile(request):
 
 def set_profile(request):
     '''修改个人信息,及交友资料'''
+    user = request.user
+    user_form = UserForm(request.POST)
+    if user_form.is_valid():
+        user.__dict__.update(user_form.cleaned_data)    #  更新兑现属性
+        user.save()
+    else:
+        return render_json(data=user_form.errors, code=stat.UserDataErr)
+    profile_form = ProfileForm(request.POST)
+    if profile_form.is_valid():
+        profile = profile_form.save(commit=False)
+        profile.id = user.id
+        profile.save()
+    else:
+        return render_json(data=profile_form.errors, code=stat.ProfileDataErr)
     return render_json()
 
 
