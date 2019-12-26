@@ -3,8 +3,8 @@ from copy import copy
 from django.core.cache import cache
 import requests
 
-from swiper.swiper import config
-from swiper.common import keys
+from swiper import config
+from common import keys
 
 def random_code(length=6):
     return "".join([str(random.randint(0,9)) for i in range(length)])
@@ -12,8 +12,9 @@ def random_code(length=6):
 def send_vcode(phonenum):
     ''' 发送验证码 '''
     # vcode = random_code()
-    vcode = 1111
-    cache.set(keys.VCODE_KEY % phonenum, vcode, 180) # 使用缓存记录验证码，时间到了自动过期
+    vcode = "1111"
+    cache.set(keys.VCODE_KEY % phonenum, vcode, 1800000) # 使用缓存记录验证码，时间到了自动过期
+    print(keys.VCODE_KEY % phonenum)
     params = copy(config.YZX_PARAMS)
     params['param'] = vcode
     params["mobile"] = phonenum

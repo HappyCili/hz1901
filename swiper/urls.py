@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from swiper.user import apis as user_api
+from user import apis as user_api
 urlpatterns = [
     url(r'^api/uesr/get_vcode', user_api.get_vcode),
     url(r'^api/uesr/check_vcode', user_api.check_vcode),

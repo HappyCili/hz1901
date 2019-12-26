@@ -1,6 +1,6 @@
 '''程序逻辑配置，及第三方平台配置'''
 
-# 云之讯平台配置
+# 云之讯平台配
 YZX_API = "https://open.ucpaas.com/ol/sms/sendsms"
 YZX_PARAMS = {
     "sid": "babcf6a9c29a3fe76e7e77a9778e1dfb",

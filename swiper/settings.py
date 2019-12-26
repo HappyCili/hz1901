@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'b5b#yptvlx4qsl+gxgkhvu%+@i&l^+^9ypz*)#@c0@*#^(q_89'
+SECRET_KEY = 'sy%te*eo&@8_izg7v_zyhu8m$ng)fh-fh%9&0y5p+i2e7$bzs#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+
+    # 自定义模块
     'user',
 ]
 
@@ -41,12 +43,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    # 自定义中间件
     'common.middleware.AuthMiddleware',
 ]
 
@@ -61,8 +58,6 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                # 'django.contrib.auth.context_processors.auth',
-                # 'django.contrib.messages.context_processors.messages',
             ],
         },
     },
@@ -77,11 +72,11 @@ WSGI_APPLICATION = 'swiper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "jy",
-        "HOST": "106.12.75.73",
-        "USER": "root",
-        "PASSWORD": "wzt521921",
-        "PORT": 3306,
+        'NAME': 'zzz',
+        'USER': "root",
+        'PASSWORD': "wzt521921",
+        'HOST': "106.12.75.73",
+        'PORT': 3306,
     }
 }
 
@@ -108,9 +103,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'Asia-shanghai'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 

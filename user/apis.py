@@ -3,10 +3,11 @@ import random
 from django.http import JsonResponse
 from django.core.cache import cache
 
-from swiper.user.models import User
-from swiper.user import logics
-from swiper.common import stat, keys
-from swiper.lib.http import render_json
+from user.models import User
+from user import logics
+from common import stat, keys
+from lib.http import render_json
+from lib.orm import model_to_dict
 
 def get_vcode(request):
     ''' 用户获取验证码'''
@@ -28,7 +29,7 @@ def check_vcode(request):
     if cache_vcode == vcode:
         try:
             user = User.objects.get(phonenum=phonenum)
-        except User.DoesNOtExist:
+        except User.DoesNotExist:
             user = User.objects.create(phonenum=phonenum, nickname=phonenum)
         # 使用session记录登录状态
         request.session['uid'] = user.id
@@ -39,9 +40,8 @@ def check_vcode(request):
 
 def get_profile(request):
     '''获取个人资料'''
-    user = request.uesr
-
-    return render_json()
+    profile = request.user.profile
+    return render_json(model_to_dict(profile))
 
 
 def set_profile(request):

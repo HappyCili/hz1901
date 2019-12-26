@@ -1,8 +1,8 @@
 from django.utils.deprecation import MiddlewareMixin
 
-from swiper.lib.http import render_json
-from swiper.user.models import User
-from swiper.common import stat
+from lib.http import render_json
+from user.models import User
+from common import stat
 
 
 class AuthMiddleware(MiddlewareMixin):
