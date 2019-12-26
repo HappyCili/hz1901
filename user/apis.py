@@ -1,4 +1,5 @@
 import random
+import os
 
 from django.http import JsonResponse
 from django.core.cache import cache
@@ -9,6 +10,7 @@ from user.forms import UserForm, ProfileForm
 from common import stat, keys
 from lib.http import render_json
 from lib.orm import model_to_dict
+from lib.qncloud import upload_to_qn
 
 
 def get_vcode(request):
@@ -67,5 +69,11 @@ def set_profile(request):
 
 def upload_avatar(request):
     '''上传头像'''
+    avatar_file = request.FILES['avatar']
+    fullpath, filename = logics.save_avatar(avatar_file, request.user.id)
+    file_url = upload_to_qn(fullpath, filename)
+    os.remove(fullpath)
+    request.user.avatar=file_url
+    request.user.save()
     return render_json()
 

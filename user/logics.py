@@ -1,8 +1,9 @@
+import os
 import random
 from copy import copy
 from django.core.cache import cache
-import requests
 
+from swiper import settings
 from swiper import config
 from common import keys
 
@@ -25,3 +26,13 @@ def send_vcode(phonenum):
     #     return True
     # else:
     #     return False
+
+def save_avatar(uplpad_file, uid):
+    filename = "Avatar-%s" %uid
+    fullpath = os.path.join(settings.MEDIA_ROOT, filename)
+    print(fullpath)
+    with open(fullpath, "wb") as fp:
+        for chunk in uplpad_file.chunks():
+            fp.write(chunk)
+
+    return fullpath, filename
