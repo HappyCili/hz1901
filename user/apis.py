@@ -44,6 +44,7 @@ def check_vcode(request):
 
 def get_profile(request):
     '''获取个人资料'''
+    print(request.META)
     profile = request.user.profile
     return render_json(model_to_dict(profile))
 
@@ -73,10 +74,5 @@ def upload_avatar(request):
         avatar_file = request.FILES['avatar']
     except datastructures.MultiValueDictKeyError:
         return render_json(code=stat.ImgaeDataErr, data="ImageDateErr")
-    fullpath, filename = logics.save_avatar(avatar_file, request.user.id)
-    file_url = upload_to_qn(fullpath, filename)
-    os.remove(fullpath)
-    request.user.avatar = file_url
-    request.user.save()
+    logics.upload_avatar.delay(request.user, avatar_file)
     return render_json()
-
