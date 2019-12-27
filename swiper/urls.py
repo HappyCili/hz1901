@@ -14,13 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib import admin
+
 
 from user import apis as user_api
+from social import apis as social_api
 urlpatterns = [
     url(r'^api/uesr/get_vcode', user_api.get_vcode),
     url(r'^api/uesr/check_vcode', user_api.check_vcode),
     url(r'^api/uesr/get_profile', user_api.get_profile),
     url(r'^api/uesr/set_profile', user_api.set_profile),
     url(r'^api/uesr/upload_avatar', user_api.upload_avatar),
+
+
+    url(r'^api/social/rcmd_users', social_api.rcmd_users),
+    url(r'^api/social/like', social_api.like),
+    url(r'^api/social/superlike', social_api.superlike),
+    url(r'^api/social/rewind', social_api.rewind),
+    url(r'^api/social/show_liked_me', social_api.show_liked_me),
+
+
 ]
