@@ -30,3 +30,15 @@ class Swiped(models.Model):
     @classmethod
     def swiped_uid_list(cls, uid):
         return Swiped.objects.filter(uid=uid).values_list("sid", flat=True)
+
+
+class Friend(models.Model):
+    '''好友表'''
+    uid1 = models.IntegerField(verbose_name='好友 ID')
+    uid2 = models.IntegerField(verbose_name='好友 ID')
+
+    @classmethod
+    def make_friends(cls, uid1, uid2):
+        '''建立好友关系'''
+        uid1, uid2 = (uid1, uid2) if uid1 < uid2 else (uid2, uid1)
+        cls.objects.get_or_create(uid1=uid1,uid2=uid2)

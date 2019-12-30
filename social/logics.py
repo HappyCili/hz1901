@@ -2,7 +2,7 @@ import datetime
 
 
 from user.models import User
-from social.models import Swiped
+from social.models import Swiped, Friend
 
 
 def rcmd(user):
@@ -24,7 +24,7 @@ def like_someone(user, sid):
     Swiped.swipe(user.id, sid, 'like')
     # 检查对方是否喜欢过自己
     if Swiped.is_like(sid, user.uid):
-        # TODO: 匹配好友关系
+        Friend.make_friends(sid, user.id)
         return True
     else:
         return False
