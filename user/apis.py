@@ -18,7 +18,7 @@ def get_vcode(request):
     if logics.send_vcode(phonenum):
         return render_json(code=stat.OK)
     else:
-        return render_json(code=stat.SMSErr, data="SMSError")
+        raise stat.SMSErr
 
 
 def check_vcode(request):
@@ -28,7 +28,7 @@ def check_vcode(request):
     cache_vcode = cache.get(keys.VCODE_KEY % phonenum)
     # 检测验证码是否过期
     if cache_vcode is None:
-        return render_json(code=stat.VcodeExpired, data="VcodeExpired")
+       raise stat.VcodeExpired
     # 判断验证码是否一致
     if cache_vcode == vcode:
         try:
@@ -39,7 +39,7 @@ def check_vcode(request):
         request.session['uid'] = user.id
         return render_json(code=0, data=user.to_dict())
     else:
-        return render_json(code=stat.VcodeErr, data="VcodeError")
+        raise stat.VcodeErr
 
 
 def get_profile(request):
@@ -57,14 +57,14 @@ def set_profile(request):
         user.__dict__.update(user_form.cleaned_data)    # 更新兑现属性
         user.save()
     else:
-        return render_json(data=user_form.errors, code=stat.UserDataErr)
+        raise stat.UserDataErr(user_form.errors)
     profile_form = ProfileForm(request.POST)
     if profile_form.is_valid():
         profile = profile_form.save(commit=False)
         profile.id = user.id
         profile.save()
     else:
-        return render_json(data=profile_form.errors, code=stat.ProfileDataErr)
+        raise stat.ProfileDataErr(profile_form.errors)
     return render_json()
 
 
@@ -73,6 +73,6 @@ def upload_avatar(request):
     try:
         avatar_file = request.FILES['avatar']
     except datastructures.MultiValueDictKeyError:
-        return render_json(code=stat.ImgaeDataErr, data="ImageDateErr")
+        raise stat.ImgaeDataErr
     logics.upload_avatar.delay(request.user, avatar_file)
     return render_json()

@@ -21,3 +21,9 @@ class AuthMiddleware(MiddlewareMixin):
             return render_json(code=stat.LoginRequired, data='LoginRequired')
         # 获取当前用户
         request.user = User.objects.get(id=uid)
+
+class LogicErrMiddleware(MiddlewareMixin):
+
+    def process_exception(self, request, exception):
+        if isinstance(exception, stat.LogicErr):
+            return render_json(data=exception.data, code=exception.code)

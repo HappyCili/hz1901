@@ -37,6 +37,7 @@ INSTALLED_APPS = [
 
     # 自定义模块
     'user',
+    'social',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +48,7 @@ MIDDLEWARE = [
 
     # 自定义中间件
     'common.middleware.AuthMiddleware',
+    'common.middleware.LogicErrMiddleware',
 ]
 
 ROOT_URLCONF = 'swiper.urls'
